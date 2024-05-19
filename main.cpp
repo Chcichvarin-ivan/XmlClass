@@ -2,7 +2,7 @@
  * @Author: Ivan Chichvarin ichichvarin@humanplus.ru
  * @Date: 2024-05-19 22:51:47
  * @LastEditors: Ivan Chichvarin ichichvarin@humanplus.ru
- * @LastEditTime: 2024-05-19 22:55:57
+ * @LastEditTime: 2024-05-19 23:27:59
  * @FilePath: /XmlClass/main.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -38,8 +38,16 @@ string FindMostExpensiveCategory(const vector<Spending>& spendings) {
 }
 
 vector<Spending> LoadFromXml(istream& input) {
-    // место для вашей реализации
-    // пример корректного XML-документа в условии
+    vector<Spending> ret_val;
+    
+    Document in_xml = Load(input);
+    ret_val.reserve(in_xml.GetRoot().Children().size());
+
+    for(const Node& node : in_xml.GetRoot().Children()){
+        ret_val.push_back({node.AttributeValue<string>("category"s), node.AttributeValue<int>("amount"s)});
+    }
+    
+    return ret_val;
 }
 
 int main() {
